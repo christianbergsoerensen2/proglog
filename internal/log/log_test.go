@@ -50,7 +50,8 @@ func testAppendRead(t *testing.T, log *Log) {
 
 func testOutOfRangeErr(t *testing.T, log *Log) {
 	_, err := log.Read(1)
-	require.Error(t, err)
+	apiErr := err.(api.ErrOffsetOutOfRange)
+	require.ErrorIs(t, err, apiErr)
 }
 
 func testInitExisting(t *testing.T, log *Log) {

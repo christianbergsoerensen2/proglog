@@ -45,7 +45,7 @@ type Config struct {
 	ACLModelFile    string
 	ACLPolicyFile   string
 
-	bootstrap bool
+	Bootstrap bool
 }
 
 func (c Config) RPCAddr() (string, error) {
@@ -120,7 +120,7 @@ func (a *Agent) setupLog() error {
 		a.Config.PeerTLSConfig,
 	)
 	logConfig.Raft.LocalID = raft.ServerID(a.Config.NodeName)
-	logConfig.Raft.Bootstrap = a.Config.bootstrap
+	logConfig.Raft.Bootstrap = a.Config.Bootstrap
 	var err error
 	a.log, err = log.NewDistributedLog(
 		a.Config.DataDir,
@@ -130,7 +130,7 @@ func (a *Agent) setupLog() error {
 		return nil
 	}
 
-	if a.Config.bootstrap {
+	if a.Config.Bootstrap {
 		err = a.log.WaitForLeader(3 * time.Second)
 	}
 
